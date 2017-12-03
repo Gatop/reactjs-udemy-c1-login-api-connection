@@ -1,5 +1,6 @@
 import Reflux from 'reflux';
 import Actions from '../actions/Actions.js';
+import * as HTTP from '../services/http'
 
 class AppStore extends Reflux.Store {
     constructor() {
@@ -12,8 +13,17 @@ class AppStore extends Reflux.Store {
         }
     }
 
+    // Utilizamos  el servicio http que creamos para lanzar un request a la url
+    // La respuesta la asignamos a la data que va a ser utilizada por la vista
+    // funciona con una promesa
     getUsers() {
-        alert("get_users");
+        const self = this;
+        HTTP.get('https://reqres.in/api/users?page=2')
+        .then((response) => {
+            self.setState({
+                data: response.data
+            });
+        })
     }
 }
 
